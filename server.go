@@ -8,7 +8,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/Tady-g8/pwdManagerBackend/models"
-	"github.com/Tady-g8/pwdManagerBackend/passwordpipeline"
+	"github.com/Tady-g8/pwdManagerBackend/pipelines/passwordpipeline"
+	"github.com/Tady-g8/pwdManagerBackend/utils"
 )
 
 func main() {
@@ -37,6 +38,11 @@ func main() {
 	app.Post("/createPwd/:userId/:appName", func(c *fiber.Ctx) error {
 		db := c.Locals("db").(*gorm.DB)
 		return passwordpipeline.GeneratePassword(c, db)
+	})
+
+	app.Get("/getAppNames/:userId", func(c *fiber.Ctx) error {
+		db := c.Locals("db").(*gorm.DB)
+		return utils.GetUsersAppNames(c, db)
 	})
 
 	log.Fatal(app.Listen(":3000"))
