@@ -7,8 +7,9 @@ import (
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 
-	"github.com/Tady-g8/pwdManagerBackend/generatepassword"
 	"github.com/gofiber/fiber/v2"
+
+	"github.com/Tady-g8/pwdManagerBackend/passwordpipeline"
 )
 
 func main() {
@@ -26,7 +27,7 @@ func main() {
 		return c.SendString("Hello, World!")
 	})
 
-	app.Post("/createPwd/:userId/:appName", generatepassword.GeneratePassword)
+	app.Post("/createPwd/:userId/:appName", passwordpipeline.GeneratePassword)
 
 	log.Fatal(app.Listen(":3000"))
 }

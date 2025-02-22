@@ -3,7 +3,7 @@ package passwordpipeline
 import (
 	"fmt"
 
-	"github.com/Tady-g8/pwdManagerBackend/generatepassword/utils"
+	"github.com/Tady-g8/pwdManagerBackend/passwordpipeline/utils"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
