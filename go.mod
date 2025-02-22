@@ -1,4 +1,4 @@
-module server
+module github.com/Tady-g8/pwdManagerBackend
 
 go 1.23.4
 

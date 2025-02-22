@@ -1,4 +1,4 @@
-package PasswordPipelineUtils
+package utils
 
 import (
 	"crypto/sha256"

@@ -1,4 +1,4 @@
-package PasswordPipeline
+package passwordpipeline
 
 import (
 	"fmt"
