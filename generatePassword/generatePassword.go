@@ -2,8 +2,8 @@ package passwordpipeline
 
 import (
 	"fmt"
-	passwordPipelineUtils "server/generatePassword/utils"
 
+	"github.com/Tady-g8/pwdManagerBackend/generatepassword/utils"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -36,34 +36,34 @@ func (p *PasswordPipeline) GeneratePassword(c *fiber.Ctx) error {
 		})
 	}
 
-	securePassword, err := passwordPipelineUtils.GenerateSecurePassword()
+	securePassword, err := utils.GenerateSecurePassword()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to generate password",
 		})
 	}
 
-	salt, err := passwordPipelineUtils.GenerateSalt()
+	salt, err := utils.GenerateSalt()
 	if err != nil {
 		return err
 	}
 
-	usersPassword, err := passwordPipelineUtils.GetUserMasterPassword(p.db, uint(userId))
+	usersPassword, err := utils.GetUserMasterPassword(p.db, uint(userId))
 	if err != nil {
 		return err
 	}
 
-	encryptionKey, err := passwordPipelineUtils.GenerateEncryptionKey(usersPassword, salt)
+	encryptionKey, err := utils.GenerateEncryptionKey(usersPassword, salt)
 	if err != nil {
 		return err
 	}
 
-	encryptedPassword, err := passwordPipelineUtils.EncryptPassword(securePassword, encryptionKey)
+	encryptedPassword, err := utils.EncryptPassword(securePassword, encryptionKey)
 	if err != nil {
 		return err
 	}
 
-	err = passwordPipelineUtils.StoreEncryptedPassword(p.db, appName, encryptedPassword, userId, salt)
+	err = utils.StoreEncryptedPassword(p.db, appName, encryptedPassword, userId, salt)
 	if err != nil {
 		return err
 	}

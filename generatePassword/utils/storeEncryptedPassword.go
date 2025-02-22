@@ -2,8 +2,8 @@ package utils
 
 import (
 	"fmt"
-	"server/models"
 
+	"github.com/Tady-g8/pwdManagerBackend/models"
 	"gorm.io/gorm"
 )
 
