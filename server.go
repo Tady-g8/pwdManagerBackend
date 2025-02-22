@@ -1,24 +1,26 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/glebarez/sqlite"
+	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 
-	"github.com/gofiber/fiber/v2"
-
+	"github.com/Tady-g8/pwdManagerBackend/models"
 	"github.com/Tady-g8/pwdManagerBackend/passwordpipeline"
 )
 
 func main() {
 
-	fmt.Print("hello???")
-
-	db, err := gorm.Open(sqlite.Open("passwords.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+		panic("failed to connect database")
+	}
+
+	err = db.AutoMigrate(&models.User{}, &models.Password{})
+	if err != nil {
+		panic("failed to migrate database")
 	}
 
 	app := fiber.New()

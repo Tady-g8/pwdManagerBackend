@@ -2,12 +2,19 @@ package utils
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/Tady-g8/pwdManagerBackend/models"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
-func StoreEncryptedPassword(db *gorm.DB, appName string, encryptedPassword string, userId int, salt string) error {
+func StoreEncryptedPassword(appName string, encryptedPassword string, userId int, salt string) error {
+	db, err := gorm.Open(sqlite.Open("../../passwords.db"), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Failed to connect to database:", err)
+	}
+
 	password := models.Password{
 		AppName: appName,
 		Value:   encryptedPassword,

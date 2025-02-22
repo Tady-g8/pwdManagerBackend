@@ -1,26 +1,11 @@
 package passwordpipeline
 
 import (
-	"fmt"
-
 	"github.com/Tady-g8/pwdManagerBackend/passwordpipeline/utils"
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
-type PasswordPipeline struct {
-	db *gorm.DB
-}
-
-func NewPasswordPipeline(db *gorm.DB) *PasswordPipeline {
-	return &PasswordPipeline{
-		db: db,
-	}
-}
-
-func (p *PasswordPipeline) GeneratePassword(c *fiber.Ctx) error {
-
-	fmt.Print("called GeneratePassword")
+func GeneratePassword(c *fiber.Ctx) error {
 
 	userId, err := c.ParamsInt("userId")
 	if err != nil {
@@ -48,7 +33,7 @@ func (p *PasswordPipeline) GeneratePassword(c *fiber.Ctx) error {
 		return err
 	}
 
-	usersPassword, err := utils.GetUserMasterPassword(p.db, uint(userId))
+	usersPassword, err := utils.GetUserMasterPassword(uint(userId))
 	if err != nil {
 		return err
 	}
@@ -63,7 +48,7 @@ func (p *PasswordPipeline) GeneratePassword(c *fiber.Ctx) error {
 		return err
 	}
 
-	err = utils.StoreEncryptedPassword(p.db, appName, encryptedPassword, userId, salt)
+	err = utils.StoreEncryptedPassword(appName, encryptedPassword, userId, salt)
 	if err != nil {
 		return err
 	}
