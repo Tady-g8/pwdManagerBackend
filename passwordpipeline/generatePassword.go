@@ -3,9 +3,10 @@ package passwordpipeline
 import (
 	"github.com/Tady-g8/pwdManagerBackend/passwordpipeline/utils"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
-func GeneratePassword(c *fiber.Ctx) error {
+func GeneratePassword(c *fiber.Ctx, db *gorm.DB) error {
 
 	userId, err := c.ParamsInt("userId")
 	if err != nil {
@@ -33,7 +34,7 @@ func GeneratePassword(c *fiber.Ctx) error {
 		return err
 	}
 
-	usersPassword, err := utils.GetUserMasterPassword(uint(userId))
+	usersPassword, err := utils.GetUserMasterPassword(uint(userId), db)
 	if err != nil {
 		return err
 	}
@@ -48,13 +49,14 @@ func GeneratePassword(c *fiber.Ctx) error {
 		return err
 	}
 
-	err = utils.StoreEncryptedPassword(appName, encryptedPassword, userId, salt)
+	err = utils.StoreEncryptedPassword(appName, encryptedPassword, userId, salt, db)
 	if err != nil {
 		return err
 	}
 
 	return c.JSON(fiber.Map{
-		"message": "Password created successfully",
-		"appName": appName,
+		"message":       "Password created successfully",
+		"appName":       appName,
+		"generated pwd": securePassword,
 	})
 }

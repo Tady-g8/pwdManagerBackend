@@ -25,11 +25,19 @@ func main() {
 
 	app := fiber.New()
 
+	app.Use(func(c *fiber.Ctx) error {
+		c.Locals("db", db)
+		return c.Next()
+	})
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})
 
-	app.Post("/createPwd/:userId/:appName", passwordpipeline.GeneratePassword)
+	app.Post("/createPwd/:userId/:appName", func(c *fiber.Ctx) error {
+		db := c.Locals("db").(*gorm.DB)
+		return passwordpipeline.GeneratePassword(c, db)
+	})
 
 	log.Fatal(app.Listen(":3000"))
 }
