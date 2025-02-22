@@ -2,7 +2,7 @@ package PasswordPipeline
 
 import (
 	"fmt"
-	passwordPipelineUtils "server/generatePasswordPipeline/utils"
+	passwordPipelineUtils "server/generatePassword/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
